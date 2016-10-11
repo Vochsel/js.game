@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="../src/game.js"></script>
 		<script type="text/javascript" src="../src/time.js"></script>
 		<script type="text/javascript" src="../src/draw.js"></script>
+		<script type="text/javascript" src="../src/input.js"></script>
 		<script type="text/javascript" src="../src/state.js"></script>
 		<script type="text/javascript" src="../src/math.js"></script>
 		<script type="text/javascript" src="../src/physics.js"></script>
@@ -21,19 +22,26 @@
 		<canvas id="game" width="720" height="480"></canvas>
 
 		<script type="text/javascript">
+			var pos;
+
 			function game_setup()
 			{
-
+				pos = new js.vec2(js.game.hw, js.game.hh);
 			}
 
 			function game_update()
 			{
-				
+				if(js.input.keyboard.isKeyDown('a')){
+					pos.x -= 4;
+				}
+				if(js.input.keyboard.isKeyDown('d')){
+					pos.x += 4;
+				}
 			}
 
 			function game_render()
 			{
-				js.draw.rect(js.game.hw, js.game.hh, 150, 150, js.time.current, "lightblue");
+				js.draw.rect(pos.x, pos.y, 150, 150, js.time.current, "lightblue");
 			}
 
 			var state_game = new js.game.state(game_setup, game_update, game_render);

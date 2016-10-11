@@ -18,6 +18,9 @@ js.game = function(a_states, a_id)
 	{
 		//Setup internal
 		js.draw.setup(a_id);
+		js.input.setup();
+
+		console.log(js.draw.canvas.width)
 
 		//Setup scenes
 		for(var i = 0; i < this.states.length; ++i)
@@ -54,6 +57,8 @@ js.game = function(a_states, a_id)
 		game.render();
 
 		js.time.postUpdate();
+
+		js.input.postUpdate();
 
 		window.requestAnimationFrame(game.gameloop);
 	}

@@ -4,6 +4,7 @@ js.draw.setup = function(id)
 {
 	this.canvas = document.getElementById(id);
 	this.ctx = this.canvas.getContext("2d");
+	this.preUpdate();
 }
 
 js.draw.preUpdate = function()
