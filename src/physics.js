@@ -78,6 +78,35 @@ js.physics.rect = function(pos, width)
 	}
 }
 
+js.physics.aabb = function(pos, width)
+{
+	// Test for collision
+	this.collision = function(other)
+	{
+		switch(other.constructor)
+		{
+			case js.physics.ray:
+				console.log("ray hit aabb");
+				break;
+			case js.physics.line:
+				console.log("line hit aabb");
+				break;
+			case js.physics.aabb:
+				console.log("aabb hit aabb");
+				break;
+			case js.physics.rect:
+				console.log("rect hit aabb");
+				break;
+			case js.physics.circle:
+				console.log("circle hit aabb");
+				break;
+			default:
+				console.log("unknown hit aabb");
+				break;
+		}
+	}
+}
+
 js.physics.circle = function(pos, rad)
 {
 	// Test for collision
@@ -104,4 +133,16 @@ js.physics.circle = function(pos, rad)
 	}
 }
 
-js.physics.collision.
+
+
+/*js.physics.collision.circleOnCircle = function(a, b)
+{
+
+}
+
+js.physics.collision.aabbOnCircle = function(a, b)
+{
+
+}
+*/
+

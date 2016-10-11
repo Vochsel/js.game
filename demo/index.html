@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="styles.css">
 
 		<script type="text/javascript" src="../src/game.js"></script>
+		<script type="text/javascript" src="../src/state.js"></script>
 		<script type="text/javascript" src="../src/math.js"></script>
 		<script type="text/javascript" src="../src/physics.js"></script>
 
@@ -17,5 +18,26 @@
 
 		<canvas id="game" width="720" height="480"></canvas>
 
+		<script type="text/javascript">
+			function game_setup()
+			{
+
+			}
+
+			function game_update()
+			{
+				
+			}
+
+			function game_render()
+			{
+
+			}
+
+			var state_game = new js.game.state(game_setup, game_update, game_render);
+
+			var g = new js.game([state_game]);
+			
+		</script>
 	</body>
 </html>
