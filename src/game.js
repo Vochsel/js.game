@@ -6,7 +6,7 @@ js.game = {
 	author: "Ben Skinner"
 }
 
-js.game = function(a_states)
+js.game = function(a_states, a_id)
 {
 	var game = this;
 
@@ -15,8 +15,9 @@ js.game = function(a_states)
 
 	// - Game Setup Function
 	this.setup = function() 
-	{ 
+	{
 		//Setup internal
+		js.draw.setup(a_id);
 
 		//Setup scenes
 		for(var i = 0; i < this.states.length; ++i)
@@ -32,22 +33,30 @@ js.game = function(a_states)
 	this.update = function() 
 	{
 		this.states[this.currentState].update_func();
-		console.log("Updated");
 	}
 
 	// - Game Render Function
 	this.render = function() 
 	{
+		js.draw.clear();
+
 		this.states[this.currentState].render_func();
 	}
 
 	// - Game Loop Function
-	this.gameloop = function() 
+	this.gameloop = function(t) 
 	{
+		js.draw.preUpdate();
+
+		js.time.preUpdate(t);
+		
 		game.update();
 		game.render();
+
+		js.time.postUpdate();
+
 		window.requestAnimationFrame(game.gameloop);
 	}
 
-	//document.onload = this.setup();
+	document.body.onload = this.setup();
 }
