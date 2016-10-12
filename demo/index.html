@@ -24,6 +24,11 @@
 		<script type="text/javascript">
 			var pos;
 
+			function menu_render()
+			{
+				js.draw.rect(100, 100, 100, 100, 0, "black");
+			}
+
 			function game_setup()
 			{
 				pos = new js.vec2(js.game.hw, js.game.hh);
@@ -44,9 +49,10 @@
 				js.draw.rect(pos.x, pos.y, 150, 150, js.time.current, "lightblue");
 			}
 
+			var state_menu = new js.game.state(game_setup, game_update, menu_render);
 			var state_game = new js.game.state(game_setup, game_update, game_render);
 
-			var g = new js.game([state_game], "game");
+			var g = new js.game([state_menu, state_game], "game");
 			
 		</script>
 	</body>

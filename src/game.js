@@ -43,7 +43,7 @@ js.game = function(a_states, a_id)
 	{
 		js.draw.clear();
 
-		this.states[this.currentState].render_func();
+		game.states[game.currentState].render_func();
 	}
 
 	// - Game Loop Function
@@ -61,6 +61,21 @@ js.game = function(a_states, a_id)
 		js.input.postUpdate();
 
 		window.requestAnimationFrame(game.gameloop);
+	}
+
+	// -- Util Functions
+	this.changeState = function(idx)
+	{
+		var l = game.states.length;
+		if(idx < l)
+		{
+			// - Can change states
+			game.currentState = idx;
+		} else
+		{
+			// - Failed to change state
+			console.log("Failed to change state to: " + idx + ". There are only " + l + " states.");
+		}
 	}
 
 	document.body.onload = this.setup();
