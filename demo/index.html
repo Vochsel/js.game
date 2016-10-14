@@ -24,6 +24,13 @@
 		<script type="text/javascript">
 			var pos;
 
+			var rect1 = new js.physics.rect(new js.vec2(100, 100), 100, 100);
+			var rect2 = new js.physics.rect(new js.vec2(300, 100), 100, 100);
+
+			var circle1 = new js.physics.circle(new js.vec2(100, 100), 50);
+			var circle2 = new js.physics.circle(new js.vec2(300, 100), 75);
+
+
 			function menu_render()
 			{
 				js.draw.rect(100, 100, 100, 100, 0, "black");
@@ -42,17 +49,25 @@
 				if(js.input.keyboard.isKeyDown('d')){
 					pos.x += 4;
 				}
+
+				circle2.pos = js.input.mouse.pos;
+
+				circle1.collision(circle2);
 			}
 
 			function game_render()
 			{
-				js.draw.rect(pos.x, pos.y, 150, 150, js.time.current, "lightblue");
+				//js.draw.rect(pos.x, pos.y, 150, 150, js.time.current, "lightblue");
+
+				circle1.draw();
+				circle2.draw();
 			}
 
 			var state_menu = new js.game.state(game_setup, game_update, menu_render);
 			var state_game = new js.game.state(game_setup, game_update, game_render);
 
 			var g = new js.game([state_menu, state_game], "game");
+			g.changeState(1);
 			
 		</script>
 	</body>

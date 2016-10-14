@@ -2,8 +2,7 @@ js.input = {};
 
 js.input.mouse = 
 {
-	x: 0,
-	y: 0,
+	pos: {},
 	dx: 0,
 	dy: 0,
 	lx: 0,
@@ -29,10 +28,11 @@ js.input.keyboard =
 
 js.input.setup = function()
 {
+	js.input.mouse.pos = new js.vec2(0,0);
 	//Mouse move
 	js.draw.canvas.addEventListener("mousemove", function(e) {
-		js.input.mouse.x = e.offsetX;
-		js.input.mouse.y = e.offsetY;
+		js.input.mouse.pos.x = e.offsetX;
+		js.input.mouse.pos.y = e.offsetY;
 		//console.log(js.input.mouse.x + " : " + js.input.mouse.y);
 	});
 
