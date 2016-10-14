@@ -155,10 +155,13 @@ js.physics.circle = function(pos, rad)
 				console.log("rect hit circle");
 				break;
 			case js.physics.circle:
-				var hit = js.physics.collision.circleToCircle(this, other);
+				var details = {};
+				var hit = js.physics.collision.circleToCircle(this, other, details);
 				if(hit)
 				{
 					console.log("circle hit circle");
+					console.log(details)
+					this.pos.addP(details.normal.mul(details.overlap));
 				}
 				break;
 			default:
@@ -191,10 +194,13 @@ js.physics.collision.circleToCircle = function(c1, c2, details)
 {
 	var dist = c1.pos.sub(c2.pos).length();
 	var rads = c1.rad + c2.rad;
-	//console.log(dist + " : " + rads);
+
+	//details = {};
+	details.normal = c1.pos.sub(c2.pos).normalize();
+	details.overlap = rads - dist;
+	//console.log(details.normal)
 	if(dist < rads)
 	{
-		details = {};
 		return true;
 	}
 	return false;
