@@ -32,7 +32,7 @@
 			var circle1 = new js.shapes.circle(new js.vec2(100, 100), 50);
 			var circle2 = new js.shapes.circle(new js.vec2(300, 100), 75);
 			
-			var mouseBall = new js.shapes.rect(new js.vec2(300, 100), 75, 75);
+			var mouseBall = new js.shapes.circle(new js.vec2(300, 100), 75, 75);
 
 			var state_menu = new js.game.state(game_setup, game_update, menu_render);
 			var state_game = new js.game.state(game_setup, game_update, game_render);
@@ -81,11 +81,11 @@
 			//g.physicsWorld.addBody(new js.physics.rigidBody(c));
 			
 
-			for(var xi = 0; xi < 4; ++xi)
+			for(var xi = 0; xi < 10; ++xi)
 			{
-				for(var yi = 0; yi < 4; ++yi)
+				for(var yi = 0; yi < 5; ++yi)
 				{
-					var c = new js.shapes.rect(new js.vec2(55 * xi + 100, 55 * yi + 100), 25, 25);
+					var c = new js.shapes.circle(new js.vec2(15 * xi + 100, 15 * yi + 100), 5);
 					g.physicsWorld.addBody(new js.physics.rigidBody(c));
 				}
 			}

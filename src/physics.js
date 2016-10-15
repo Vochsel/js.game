@@ -146,7 +146,7 @@ js.physics.rigidBody = function(shape)
 							var hit = js.physics.collision.aabbToAabb(this.shape, a_other.shape, a_details);
 							if(hit)
 							{
-								console.log("rect hit rect");
+								//console.log("rect hit rect");
 								hasHit = true;
 							}
 							break;
@@ -176,7 +176,7 @@ js.physics.rigidBody = function(shape)
 							var hit = js.physics.collision.circleToCircle(this.shape, a_other.shape, a_details);
 							if(hit)
 							{
-								console.log("circle hit circle");
+								//console.log("circle hit circle");
 								hasHit = true;
 							}
 							
@@ -222,18 +222,33 @@ js.physics.collision.aabbToAabb = function(r1, r2, details)
 
 js.physics.collision.circleToCircle = function(c1, c2, details)
 {
-	var dist = c1.pos.sub(c2.pos).length();
+	/*var s = c1.pos.sub(c2.pos);
+
+	var dist = s.length();
 	var rads = c1.rad + c2.rad;
 
 	//details = {};
-	details.normal = c1.pos.sub(c2.pos).normalize();
+	details.normal = s.normalize();
 	details.overlap = rads - dist;
 	//console.log(details.normal)
 	if(dist < rads)
 	{
 		return true;
 	}
-	return false;
+	return false;*/
+
+	var a = c1.rad + c2.rad;
+    var dx = c1.pos.x - c2.pos.x;
+    var dy = c1.pos.y - c2.pos.y;
+
+	details.normal = new js.vec2(dx,dy).normalize();
+
+	var asq = a * a;
+	var lsq = (dx * dx + dy * dy);
+
+	details.overlap = Math.sqrt(asq - lsq);
+
+    return asq > lsq;
 }
 
 /*
