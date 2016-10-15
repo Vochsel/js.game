@@ -1,8 +1,31 @@
 //Vec2
 js.vec2 = function(x, y) {
 
-	this.x = x;
-	this.y = y;
+	if(y === undefined)
+	{
+		this.x = x.x;
+		this.y = x.y;
+	} else {
+		this.x = x;
+		this.y = y;
+	}
+
+	this.set = function(v, y) 
+	{ 
+		if(y == undefined && typeof v === "object")
+		{
+			this.x = v.x; 
+			this.y = v.y; 
+		} else
+		{
+			this.x = v;
+			this.y = y;
+		}
+
+
+
+		return this; 
+	}
 
 	this.clone = function() { return new js.vec2(this.x, this.y); }
 

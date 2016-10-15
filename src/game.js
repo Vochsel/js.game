@@ -13,6 +13,8 @@ js.game = function(a_states, a_id)
 	this.states = a_states;
 	this.currentState = 0;
 
+	this.physicsWorld = new js.physics.world();
+
 	// - Game Setup Function
 	this.setup = function() 
 	{
@@ -35,6 +37,7 @@ js.game = function(a_states, a_id)
 	// - Game Update Function
 	this.update = function() 
 	{
+		this.physicsWorld.update();
 		this.states[this.currentState].update_func();
 	}
 

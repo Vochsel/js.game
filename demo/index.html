@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="../src/input.js"></script>
 		<script type="text/javascript" src="../src/state.js"></script>
 		<script type="text/javascript" src="../src/math.js"></script>
+		<script type="text/javascript" src="../src/shapes.js"></script>
 		<script type="text/javascript" src="../src/physics.js"></script>
 
 	</head>
@@ -22,14 +23,21 @@
 		<canvas id="game" width="720" height="480"></canvas>
 
 		<script type="text/javascript">
+
 			var pos;
 
-			var rect1 = new js.physics.rect(new js.vec2(100, 100), 100, 100);
-			var rect2 = new js.physics.rect(new js.vec2(300, 100), 100, 100);
+			var rect1 = new js.shapes.rect(new js.vec2(100, 100), 100, 100);
+			var rect2 = new js.shapes.rect(new js.vec2(300, 100), 100, 100);
 
-			var circle1 = new js.physics.circle(new js.vec2(100, 100), 50);
-			var circle2 = new js.physics.circle(new js.vec2(300, 100), 75);
+			var circle1 = new js.shapes.circle(new js.vec2(100, 100), 50);
+			var circle2 = new js.shapes.circle(new js.vec2(300, 100), 75);
+			
+			var mouseBall = new js.shapes.rect(new js.vec2(300, 100), 75, 75);
 
+			var state_menu = new js.game.state(game_setup, game_update, menu_render);
+			var state_game = new js.game.state(game_setup, game_update, game_render);
+
+			var g = new js.game([state_menu, state_game], "game");
 
 			function menu_render()
 			{
@@ -50,24 +58,45 @@
 					pos.x += 4;
 				}
 
-				circle2.pos = js.input.mouse.pos;
+				mouseBall.pos = js.input.mouse.pos;
 
-				circle1.collision(circle2);
 			}
 
 			function game_render()
 			{
 				//js.draw.rect(pos.x, pos.y, 150, 150, js.time.current, "lightblue");
 
-				circle1.draw();
-				circle2.draw();
+				//console.log(g.physicsWorld.bodies);
+				for(var i = 0; i < g.physicsWorld.bodies.length; i++)
+				{
+					g.physicsWorld.bodies[i].shape.draw();
+				}
 			}
 
-			var state_menu = new js.game.state(game_setup, game_update, menu_render);
-			var state_game = new js.game.state(game_setup, game_update, game_render);
-
-			var g = new js.game([state_menu, state_game], "game");
+			
 			g.changeState(1);
+
+			
+			//var c = new js.shapes.circle(new js.vec2(300, 100), 40);
+			//g.physicsWorld.addBody(new js.physics.rigidBody(c));
+			
+
+			for(var xi = 0; xi < 4; ++xi)
+			{
+				for(var yi = 0; yi < 4; ++yi)
+				{
+					var c = new js.shapes.rect(new js.vec2(55 * xi + 100, 55 * yi + 100), 25, 25);
+					g.physicsWorld.addBody(new js.physics.rigidBody(c));
+				}
+			}
+
+			//g.physicsWorld.addBody(new js.physics.rigidBody(circle1));
+			//g.physicsWorld.addBody(new js.physics.rigidBody(circle2));
+
+			var mouseBallRB = new js.physics.rigidBody(mouseBall);
+			mouseBallRB.kinematic = true;
+
+			g.physicsWorld.addBody(mouseBallRB);
 			
 		</script>
 	</body>
