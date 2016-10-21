@@ -24,20 +24,13 @@
 
 		<script type="text/javascript">
 
-			var pos;
-
-			var rect1 = new js.shapes.rect(new js.vec2(100, 100), 100, 100);
-			var rect2 = new js.shapes.rect(new js.vec2(300, 100), 100, 100);
-
-			var circle1 = new js.shapes.circle(new js.vec2(100, 100), 50);
-			var circle2 = new js.shapes.circle(new js.vec2(300, 100), 75);
 			
-			var mouseBall = new js.shapes.circle(new js.vec2(300, 100), 75, 75);
 
-			var state_menu = new js.game.state(game_setup, game_update, menu_render);
+
+			//var state_menu = new js.game.state(game_setup, game_update, menu_render);
 			var state_game = new js.game.state(game_setup, game_update, game_render);
 
-			var g = new js.game([state_menu, state_game], "game");
+			var g = new js.game([state_game], "game");
 
 			function menu_render()
 			{
@@ -72,31 +65,6 @@
 					g.physicsWorld.bodies[i].shape.draw();
 				}
 			}
-
-			
-			g.changeState(1);
-
-			
-			//var c = new js.shapes.circle(new js.vec2(300, 100), 40);
-			//g.physicsWorld.addBody(new js.physics.rigidBody(c));
-			
-
-			for(var xi = 0; xi < 50; ++xi)
-			{
-				for(var yi = 0; yi < 5; ++yi)
-				{
-					var c = new js.shapes.circle(new js.vec2(15 * xi + 100, 15 * yi + 100), 5);
-					g.physicsWorld.addBody(new js.physics.rigidBody(c));
-				}
-			}
-
-			//g.physicsWorld.addBody(new js.physics.rigidBody(circle1));
-			//g.physicsWorld.addBody(new js.physics.rigidBody(circle2));
-
-			var mouseBallRB = new js.physics.rigidBody(mouseBall);
-			mouseBallRB.kinematic = true;
-
-			g.physicsWorld.addBody(mouseBallRB);
 			
 		</script>
 	</body>

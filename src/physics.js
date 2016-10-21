@@ -3,63 +3,68 @@ js.physics = {};
 js.physics.world = function()
 {
 	this.bodies = [];
+}
 
-	this.addBody = function(body)
+js.physics.world.prototype.addBody = function(body)
+{
+	this.bodies.push(body);
+}
+
+js.physics.world.prototype.preUpdate = function()
+{
+
+}
+
+js.physics.world.prototype.update = function()
+{
+	for(var i = 0; i < this.bodies.length; ++i)
 	{
-		this.bodies.push(body);
+		this.bodies[i].update();
 	}
 
-	this.preUpdate = function()
+	for(var a = 0; a < this.bodies.length; ++a)
 	{
+		var bodyA = this.bodies[a];
 
-	}
-
-	this.update = function()
-	{
-		for(var i = 0; i < this.bodies.length; ++i)
+		for(var b = 0; b < this.bodies.length; ++b)
 		{
-			this.bodies[i].update();
-		}
+			var details = {};
 
-		for(var a = 0; a < this.bodies.length; ++a)
-		{
-			var bodyA = this.bodies[a];
+			var bodyB = this.bodies[b];
 
-			for(var b = 0; b < this.bodies.length; ++b)
+			//if(a > 0)
+				if(bodyA === bodyB)
+					continue;
+
+			var hit = bodyA.collision(bodyB, details);
+			//console.log(details.normal);
+			if(hit)
 			{
-				var details = {};
-
-				var bodyB = this.bodies[b];
-
-				//if(a > 0)
-					if(bodyA === bodyB)
-						continue;
-
-				var hit = bodyA.collision(bodyB, details);
-				//console.log(details.normal);
-				if(hit)
-				{
+				if(!bodyA.kinematic)
 					bodyA.shape.pos.set(bodyA.shape.pos.add(details.normal.mul(details.overlap)));
+				if(!bodyB.kinematic)
 					bodyB.shape.pos.set(bodyB.shape.pos.add(details.normal.mul(-details.overlap)));
 
-					bodyA.vel.addP(details.normal.mul(details.overlap));
-					bodyB.vel.addP(details.normal.mul(-details.overlap));
-					//bodyB.vel.addP(details.normal.mul(-0.1));
-				}
-				//bodyB.shape.pos.set(bodyB.shape.pos.add(details.normal.mul(details.overlap)));
-				//bodyB.shape.pos.set(details.normal.mul(-details.overlap / 2));
-				//bodyB.shape.pos.addP(details.normal.mul(-details.overlap / 2));
+	
 
-				//bodyB.vel.addP(details.normal.mul(0.1));
-				//bodyB.vel.addP(details.normal);
+				bodyA.vel.addP(details.normal.mul(details.overlap));
+				bodyB.vel.addP(details.normal.mul(-details.overlap));
+				//bodyA.vel.addP(details.normal.mul(0.1));
+				//bodyB.vel.addP(details.normal.mul(-0.1));
 			}
+			//bodyB.shape.pos.set(bodyB.shape.pos.add(details.normal.mul(details.overlap)));
+			//bodyB.shape.pos.set(details.normal.mul(-details.overlap / 2));
+			//bodyB.shape.pos.addP(details.normal.mul(-details.overlap / 2));
+
+			//bodyB.vel.addP(details.normal.mul(0.1));
+			//bodyB.vel.addP(details.normal);
 		}
 	}
+}
 
-	this.postUpdate = function()
-	{
+js.physics.world.prototype.postUpdate = function()
+{
 
-	}
 }
 
 js.physics.rigidBody = function(shape)
@@ -70,132 +75,133 @@ js.physics.rigidBody = function(shape)
 	this.acc = new js.vec2(0,0);
 
 	this.kinematic = false;
+}
 
-	this.update = function()
+js.physics.rigidBody.prototype.update = function()
+{
+
+	this.vel.addP(this.acc);
+	this.vel.mulP(0.9999);
+
+	if(this.kinematic)
+		this.vel.set(0, 0);
+
+	this.shape.pos.addP(this.vel);
+}
+
+js.physics.rigidBody.prototype.collision = function(a_other, a_details)
+{
+	var hasHit = false;
+
+	switch(this.shape.constructor)
 	{
-		this.vel.addP(this.acc);
-		this.vel.mulP(0.99);
+		case js.shapes.ray:
+			{
+				switch(a_other.shape.constructor)
+				{
+					case js.shapes.ray:
+						//console.log("ray hit ray");
+						break;
+					case js.shapes.line:
+						//console.log("line hit ray");
+						break;
+					case js.shapes.rect:
+						//console.log("rect hit ray");
+						break;
+					case js.shapes.circle:
+						//console.log("circle hit ray");
+						break;
+					default:
+						//console.log("unknown hit ray");
+						break;
+				}
+			}
+			break;
+		case js.shapes.line:
+			{
+				switch(a_other.shape.constructor)
+				{
+					case js.shapes.ray:
+						//console.log("ray hit line");
+						break;
+					case js.shapes.line:
+						//console.log("line hit line");
+						break;
+					case js.shapes.rect:
+						//console.log("rect hit line");
+						break;
+					case js.shapes.circle:
+						//console.log("circle hit line");
+						break;
+					default:
+						//console.log("unknown hit line");
+						break;
+				}
+			}
+			break;
+		case js.shapes.rect:
+			{
+				switch(a_other.shape.constructor)
+				{
+					case js.shapes.ray:
+						//console.log("ray hit rect");
+						break;
+					case js.shapes.line:
+						//console.log("line hit rect");
+						break;
+					case js.shapes.rect:
+						var hit = js.physics.collision.aabbToAabb(this.shape, a_other.shape, a_details);
+						if(hit)
+						{
+							//console.log("rect hit rect");
+							hasHit = true;
+						}
+						break;
+					case js.shapes.circle:
+						//console.log("circle hit rect");
+						break;
+					default:
+						//console.log("unknown hit rect");
+						break;
+				}
+			}
+			break;
+		case js.shapes.circle:
+			{
+				switch(a_other.shape.constructor)
+				{
+					case js.shapes.ray:
+						//console.log("ray hit circle");
+						break;
+					case js.shapes.line:
+						//console.log("line hit circle");
+						break;
+					case js.shapes.rect:
+						//console.log("rect hit circle");
+						break;
+					case js.shapes.circle:
+						var hit = js.physics.collision.circleToCircle(this.shape, a_other.shape, a_details);
+						if(hit)
+						{
+							//console.log("circle hit circle");
+							hasHit = true;
+						}
+						
+						break;
+					default:
+						//console.log("unknown hit circle");
+						break;
+				}
+			}
+			break;
+		default:
+			{
 
-		if(this.kinematic)
-			this.vel.set(0, 0);
-
-		this.shape.pos.addP(this.vel);
+			}
+			break;
 	}
 
-	this.collision = function(a_other, a_details)
-	{
-		var hasHit = false;
-
-		switch(this.shape.constructor)
-		{
-			case js.shapes.ray:
-				{
-					switch(a_other.shape.constructor)
-					{
-						case js.shapes.ray:
-							//console.log("ray hit ray");
-							break;
-						case js.shapes.line:
-							//console.log("line hit ray");
-							break;
-						case js.shapes.rect:
-							//console.log("rect hit ray");
-							break;
-						case js.shapes.circle:
-							//console.log("circle hit ray");
-							break;
-						default:
-							//console.log("unknown hit ray");
-							break;
-					}
-				}
-				break;
-			case js.shapes.line:
-				{
-					switch(a_other.shape.constructor)
-					{
-						case js.shapes.ray:
-							//console.log("ray hit line");
-							break;
-						case js.shapes.line:
-							//console.log("line hit line");
-							break;
-						case js.shapes.rect:
-							//console.log("rect hit line");
-							break;
-						case js.shapes.circle:
-							//console.log("circle hit line");
-							break;
-						default:
-							//console.log("unknown hit line");
-							break;
-					}
-				}
-				break;
-			case js.shapes.rect:
-				{
-					switch(a_other.shape.constructor)
-					{
-						case js.shapes.ray:
-							//console.log("ray hit rect");
-							break;
-						case js.shapes.line:
-							//console.log("line hit rect");
-							break;
-						case js.shapes.rect:
-							var hit = js.physics.collision.aabbToAabb(this.shape, a_other.shape, a_details);
-							if(hit)
-							{
-								//console.log("rect hit rect");
-								hasHit = true;
-							}
-							break;
-						case js.shapes.circle:
-							//console.log("circle hit rect");
-							break;
-						default:
-							//console.log("unknown hit rect");
-							break;
-					}
-				}
-				break;
-			case js.shapes.circle:
-				{
-					switch(a_other.shape.constructor)
-					{
-						case js.shapes.ray:
-							//console.log("ray hit circle");
-							break;
-						case js.shapes.line:
-							//console.log("line hit circle");
-							break;
-						case js.shapes.rect:
-							//console.log("rect hit circle");
-							break;
-						case js.shapes.circle:
-							var hit = js.physics.collision.circleToCircle(this.shape, a_other.shape, a_details);
-							if(hit)
-							{
-								//console.log("circle hit circle");
-								hasHit = true;
-							}
-							
-							break;
-						default:
-							//console.log("unknown hit circle");
-							break;
-					}
-				}
-				break;
-			default:
-				{
-
-				}
-				break;
-		}
-
-		return hasHit;
-	}
+	return hasHit;
 }
 
 js.physics.collision = {};
