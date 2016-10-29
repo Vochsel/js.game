@@ -71,6 +71,8 @@
 				{
 					g.physicsWorld.bodies[i].shape.draw();
 				}
+
+				js.draw.line(100, 100, 200, 200, 2);
 			}
 
 			
@@ -81,11 +83,11 @@
 			//g.physicsWorld.addBody(new js.physics.rigidBody(c));
 			
 
-			for(var xi = 0; xi < 50; ++xi)
+			for(var xi = 0; xi < 5; ++xi)
 			{
 				for(var yi = 0; yi < 5; ++yi)
 				{
-					var c = new js.shapes.circle(new js.vec2(15 * xi + 100, 15 * yi + 100), 5);
+					var c = new js.shapes.circle(new js.vec2(45 * xi + 100, 45 * yi + 100), 20);
 					g.physicsWorld.addBody(new js.physics.rigidBody(c));
 				}
 			}

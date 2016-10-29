@@ -46,3 +46,16 @@ js.draw.circle = function(x, y, rad, fillStyle)
 		ctx.fill();
 	ctx.restore();
 }
+
+js.draw.line = function(x1, y1, x2, y2, thickness, strokeStyle)
+{
+	var ctx = js.draw.ctx;
+
+	ctx.lineWidth = thickness;
+	ctx.strokeStyle = strokeStyle;
+
+	ctx.beginPath();
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
+	ctx.stroke();
+}

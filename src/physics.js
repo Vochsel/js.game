@@ -47,8 +47,8 @@ js.physics.world.prototype.update = function()
 
 	
 
-				bodyA.vel.addP(details.normal.mul(details.overlap));
-				bodyB.vel.addP(details.normal.mul(-details.overlap));
+				bodyA.vel.addP(details.normal.mul(1/details.overlap));
+				bodyB.vel.addP(details.normal.mul(-1/details.overlap));
 				//bodyA.vel.addP(details.normal.mul(0.1));
 				//bodyB.vel.addP(details.normal.mul(-0.1));
 			}
