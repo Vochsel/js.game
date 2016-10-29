@@ -47,15 +47,20 @@ js.draw.circle = function(x, y, rad, fillStyle)
 	ctx.restore();
 }
 
-js.draw.line = function(x1, y1, x2, y2, thickness, strokeStyle)
+js.draw.line = function(x1, y1, x2, y2, thickness, style)
 {
 	var ctx = js.draw.ctx;
 
 	ctx.lineWidth = thickness;
-	ctx.strokeStyle = strokeStyle;
+	ctx.strokeStyle = style;
 
 	ctx.beginPath();
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 	ctx.stroke();
+}
+
+js.draw.vec2 = function(offset, vec, length, thickness, style)
+{
+	js.draw.line(offset.x, offset.y, offset.x + (vec.x * length), offset.y + (vec.y * length));
 }
